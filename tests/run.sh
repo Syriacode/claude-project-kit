@@ -59,8 +59,9 @@ run_in() {
 }
 
 # only_git <dir>  passes if <dir> holds nothing except .git
+# shellcheck disable=SC2329  # called by name through check
 only_git() {
-  [[ -z "$(ls -A "$1" | grep -vx .git)" ]]
+  [[ -z "$(find "$1" -mindepth 1 -maxdepth 1 ! -name .git)" ]]
 }
 
 count_questions() {
@@ -105,6 +106,7 @@ check "technique defaults to TODO" grep -qF "| TODO |" "$d/README.md"
 
 # ---- Special characters ----
 echo "== special characters"
+# shellcheck disable=SC2016  # $HOME must stay literal: that's what we test
 tricky='R&D on A/B tests \ with $HOME and "quotes"'
 d="$(fresh tricky)"
 check "tricky description: exits 0" run_in "$d" go demo-vault "$tricky"
@@ -141,6 +143,7 @@ installed="$cfg/skills/new-project"
 mkdir -p "$cfg"
 printf '{\n  "theme": "dark"\n}\n' >"$cfg/settings.json"
 cp "$cfg/settings.json" "$TMP/settings.before"
+# shellcheck disable=SC2329  # called by name through check
 install_into() { env CLAUDE_CONFIG_DIR="$1" bash "$ROOT/install.sh"; }
 
 check "install: exits 0" install_into "$cfg"
