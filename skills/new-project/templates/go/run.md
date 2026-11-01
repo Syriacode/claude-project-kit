@@ -1,0 +1,6 @@
+```bash
+go run .
+go test ./...
+go vet ./...
+gofmt -l .
+```
