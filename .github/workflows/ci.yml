@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: ShellCheck
+        run: shellcheck install.sh skills/new-project/scripts/scaffold.sh tests/run.sh
+
+      - name: Validate JSON and YAML
+        run: |
+          jq empty settings/permissions.json
+          yq '.' skills/new-project/templates/*/ci.yml .github/workflows/ci.yml >/dev/null
+          awk '/^---$/ { n++; if (n == 2) exit; next } n == 1' skills/new-project/SKILL.md \
+            > "$RUNNER_TEMP/frontmatter.yml"
+          test -s "$RUNNER_TEMP/frontmatter.yml"
+          yq '.' "$RUNNER_TEMP/frontmatter.yml" >/dev/null
+
+      - name: Tests
+        run: bash tests/run.sh
