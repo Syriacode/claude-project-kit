@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(forge build *)",
+      "Bash(forge test *)",
+      "Bash(forge fmt *)",
+      "Bash(go build *)",
+      "Bash(go test *)",
+      "Bash(go vet *)",
+      "Bash(gofmt -l *)",
+      "Bash(npm test)",
+      "Bash(python -m pytest *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(gh repo view *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh run watch *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(gh repo create *)"
+    ],
+    "deny": [
+      "Bash(gh repo delete *)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)"
+    ]
+  }
+}

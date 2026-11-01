@@ -134,6 +134,24 @@ d="$(fresh twice)"
 check "first run succeeds" run_in "$d" go demo-vault "desc"
 check_not "second run fails" run_in "$d" go demo-vault "desc"
 
+# ---- install.sh (into a temp config dir, never the real ~/.claude) ----
+echo "== install"
+cfg="$TMP/config"
+installed="$cfg/skills/new-project"
+mkdir -p "$cfg"
+printf '{\n  "theme": "dark"\n}\n' >"$cfg/settings.json"
+cp "$cfg/settings.json" "$TMP/settings.before"
+install_into() { env CLAUDE_CONFIG_DIR="$1" bash "$ROOT/install.sh"; }
+
+check "install: exits 0" install_into "$cfg"
+check "install: SKILL.md exists" test -s "$installed/SKILL.md"
+check "install: scaffold.sh exists" test -s "$installed/scripts/scaffold.sh"
+check "install: templates exist" test -d "$installed/templates/go"
+touch "$installed/stale.txt"
+check "reinstall: exits 0" install_into "$cfg"
+check_not "reinstall removes stale file" test -e "$installed/stale.txt"
+check "install leaves settings.json unchanged" cmp -s "$cfg/settings.json" "$TMP/settings.before"
+
 echo
 echo "$passed passed, $failed failed"
 exit $((failed > 0))
