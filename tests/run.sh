@@ -79,7 +79,7 @@ for lang in solidity go typescript; do
     check "$lang: $f exists and is not empty" test -s "$d/$f"
   done
   check_not "$lang: no {{ left" grep -qF '{{' "${FILES[@]/#/$d/}"
-  check "$lang: README has How I used Claude Code" grep -qxF "## How I used Claude Code" "$d/README.md"
+  check_not "$lang: README has no How I used Claude Code section" grep -qF "How I used Claude Code" "$d/README.md"
   check "$lang: README has description" grep -qF "A demo vault" "$d/README.md"
   check "$lang: README has technique" grep -qF "Plan mode" "$d/README.md"
   check "$lang: INTERVIEW.md has 5 questions" test "$(count_questions "$d/INTERVIEW.md")" = 5

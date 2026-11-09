@@ -117,15 +117,3 @@ temporary `CLAUDE_CONFIG_DIR`, so your real `~/.claude` is never touched. The la
 CI (`.github/workflows/ci.yml`) runs on every push and pull request. It runs ShellCheck on the three
 scripts, validates `settings/permissions.json`, every workflow file and SKILL.md's frontmatter with jq and
 yq, and then runs `tests/run.sh`.
-
-## How I used Claude Code
-
-### What I delegated
-
-### What I reviewed
-
-### A bug I caught
-
-### Something I changed by hand
-
-### What I'd do differently
